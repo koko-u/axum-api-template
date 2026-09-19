@@ -1,0 +1,19 @@
+_skip_if_exists:
+  - .envrc
+
+user_name:
+  type: str
+  help: Author name
+
+user_email:
+  type: str
+  help: Author email
+
+workspace_name:
+  type: str
+  help: Axum workspace name (kebab-case)
+
+project_name:
+  type: str
+  help: Axum API package name (kebab-case)
+  default: api

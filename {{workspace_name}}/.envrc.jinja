@@ -1,0 +1,39 @@
+export RUST_LOG=debug,axum_keycloak_auth=info,reqwest=info,hyper=info,hyper_util=info
+export SERVER_HOST=localhost
+export SERVER_PORT=3000
+
+# CORS の設定
+export CORS_ALLOW_ORIGINS=http://localhost:4200,http://127.0.0.1:4200
+
+# データベース設定 (docker でも アプリケーションコードでも使う)
+export DATABASE_HOST=localhost
+export DATABASE_PORT=5432
+export DATABASE_USER=pgadmin
+export DATABASE_PASSWORD={{ 999999999999999999999999999999999 | ans_random | hash('sha256') }}
+export DATABASE_NAME={{ workspace_name }}_db
+export DATABASE_SSLMODE=disable
+export DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?sslmode=${DATABASE_SSLMODE}
+export MAX_CONNECTIONS=10
+
+# pgadmin の設定 (docker で使う)
+export PGADMIN_EMAIL=pgadmin@example.com
+export PGADMIN_PASSWORD={{ 999999999999999999999999999999999 | ans_random | hash('sha256') }}
+export PGADMIN_PORT=8080
+
+# keycloak の admin 設定 (docker で使う)
+export KEYCLOAK_ADMIN_USER=admin
+export KEYCLOAK_ADMIN_PASSWORD=admin
+export KEYCLOAK_DB_USER=postgres
+export KEYCLOAK_DB_PASSWORD=postgres
+export KEYCLOAK_DB_NAME=keycloak
+
+# JWT 検証の設定 (アプリケーションで使う)
+export KEYCLOAK_URL=http://localhost:8085/
+export {{ workspace_name  | replace("-", "_") | upper }}_REALM={{ workspace_name }}
+export {{ workspace_name  | replace("-", "_") | upper }}_AUDIENCE={{ workspace_name }}-api
+
+# Client credentials の設定 (アプリケーションで使う)
+export KEYCLOAK_ADMIN_CLIENT_ID={{ workspace_name }}-admin
+export KEYCLOAK_ADMIN_CLIENT_SECRET=xxx
+
+
