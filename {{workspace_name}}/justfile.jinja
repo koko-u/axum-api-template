@@ -20,14 +20,17 @@ ui-dev:
 [parallel]
 dev: api-dev ui-dev
 
-
+{% raw %}
 # docker up
 dup:
     @docker compose -f {{ workspace_root }}/docker/compose.yml up -d
+{% endraw %}
 
+{% raw %}
 # docker down
 dwn:
     @docker compose -f {{ workspace_root }}/docker/compose.yml down
+{% endraw %}
 
 # format rust code
 api-fmt:
