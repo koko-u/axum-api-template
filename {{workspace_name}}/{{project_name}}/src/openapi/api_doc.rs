@@ -9,6 +9,9 @@ const MODIFIER: security_addon::SecurityAddon = security_addon::SecurityAddon;
     paths(
     ok
     ),
+    nest(
+        (path = "/api/brands", api = BrandsApi)
+    ),
     modifiers(
        &MODIFIER
     )

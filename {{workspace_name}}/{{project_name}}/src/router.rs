@@ -9,11 +9,11 @@ pub fn app_router<R>(auth_layer: layer::KeycloakAuthLayer<R>) -> axum::Router<st
 where
     R: role::Role + 'static,
 {
-    // let protected_routes = axum::Router::new();
-    // .nest("/me", me::routes::me_router())
-    // .nest("/regions", regions::routes::regions_router())
-    // .nest("/walks", walks::routes::walks_router());
+    let protected_routes = axum::Router::new()
+        .merge(product_brands::router());
     // let protected_routes = protected_routes.layer(auth_layer);
 
-    axum::Router::new().route("/health-check", routing::get(health_check::ok))
+    axum::Router::new()
+        .route("/health-check", routing::get(health_check::ok))
+        .nest("/api", protected_routes)        
 }
