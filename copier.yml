@@ -11,6 +11,7 @@ user_email:
 
 workspace_name:
   type: str
+  default: "{{ _folder_name | replace('_', '-') }}"
   help: Axum workspace name (kebab-case)
 
 project_name:
