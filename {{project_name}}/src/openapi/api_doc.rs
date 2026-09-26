@@ -1,4 +1,5 @@
 use crate::features::health_check::*;
+use crate::features::product_brands::openapi::BrandsApi;
 
 mod security_addon;
 

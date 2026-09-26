@@ -15,6 +15,14 @@ pub enum ApiError {
     Unauthorized,
 }
 
+#[derive(Debug, derive_more::Display, derive_more::Error, derive_more::From)]
+pub enum ValidationError {
+    #[display("Database error: {}", _0)]
+    Database(#[error(source)] sqlx::Error),
+    #[display("Validation error: {}", _0)]
+    Validation(#[error(source)] garde::Report),
+}
+
 impl response::IntoResponse for ApiError {
     fn into_response(self) -> response::Response {
         match &self {
@@ -46,6 +54,15 @@ impl response::IntoResponse for ApiError {
                     responses::ProblemDetails::simple("Unauthorized", http::StatusCode::UNAUTHORIZED);
                 (http::StatusCode::UNAUTHORIZED, axum::Json(problem_details)).into_response()
             }
+        }
+    }
+}
+
+impl From<ValidationError> for ApiError {
+    fn from(err: ValidationError) -> Self {
+        match err {
+            ValidationError::Database(err) => Self::Database(err),
+            ValidationError::Validation(err) => Self::Validation(err),
         }
     }
 }

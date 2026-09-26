@@ -3,6 +3,7 @@ use axum_keycloak_auth::layer;
 use axum_keycloak_auth::role;
 
 use crate::features::health_check;
+use crate::features::product_brands;
 use crate::state;
 
 pub fn app_router<R>(auth_layer: layer::KeycloakAuthLayer<R>) -> axum::Router<state::AppState>
