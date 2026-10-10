@@ -32,6 +32,20 @@ dwn:
     @docker compose -f {{ workspace_root }}/docker/compose.yml down
 {% endraw %}
 
+# dbmate rollback all
+rollback-all:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    count=$(dbmate status | awk '/^Applied:/ { print $2 }')
+
+    echo "Rolling back $count migration(s)..."
+
+    for ((i = 0; i < count; i++)); do
+        dbmate rollback
+    done
+
+
 # format rust code
 api-fmt:
     @cargo +nightly fmt
@@ -44,3 +58,17 @@ ui-fmt:
 # format
 [parallel]
 fmt: api-fmt ui-fmt
+
+{% raw %}
+# get keycloak test jwt token
+get-token username password:
+    @curl --silent --fail-with-body \
+        -X POST \
+        'http://localhost:8085/realms/blog-app/protocol/openid-connect/token' \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        --data-urlencode 'client_id=blog-app-api' \
+        --data-urlencode 'grant_type=password' \
+        --data-urlencode 'username={{ username }}' \
+        --data-urlencode 'password={{ password }}' \
+        | jq -r '.access_token'
+{% endraw %}
