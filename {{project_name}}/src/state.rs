@@ -13,7 +13,7 @@ impl AppState {
         max_connections: shared::MaxConnections,
     ) -> Result<Self, sqlx::Error> {
         let pool = postgres::PgPoolOptions::new()
-            .max_connections(max_connections.into())
+            .max_connections(max_connections.into_inner())
             .after_connect(|conn, _meta| {
                 Box::pin(async move {
                     // When directly invoking `Executor` methods,
